@@ -29,16 +29,16 @@ def show_summary() :
     for row in data.iterrows() :
         row_l = list(row)[1]
 
-        book_price = float(row_l["Price"][2:])
+        book_price = float(row_l["Price"])
         average += book_price
-        if (most_expensive is None or float(most_expensive["Price"][2:]) < book_price):
+        if (most_expensive is None or float(most_expensive["Price"]) < book_price):
             most_expensive = {
                 "Title" : row_l["Title"],
                 "Price": row_l["Price"],
                 "Rating" : row_l["Rating"]
             }
         
-        if (cheapest is None or float(cheapest["Price"][2:]) > book_price):
+        if (cheapest is None or float(cheapest["Price"]) > book_price):
             cheapest = {
                 "Title" : row_l["Title"],
                 "Price": row_l["Price"],

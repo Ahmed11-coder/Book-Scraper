@@ -74,4 +74,12 @@ def filter_books(max_price = None, min_rating = None) :
 
         result = pd.concat([result, data[data["Rating"] >= min_rating]], ignore_index=True)
 
+<<<<<<< HEAD
     print(result + '\n')
+=======
+    if (result.empty) :
+        print("No Books Found.")
+    else : 
+        print(result + '\n')
+        print("==================")
+>>>>>>> ca0ae2c (( Feat ) Add filter_books Function)

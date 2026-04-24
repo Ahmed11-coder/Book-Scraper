@@ -21,6 +21,8 @@ while True:
 
         scraped_books = scrape_in_range(start_page, end_page)
         ana.save_data(scraped_books, loaded_data)
+    elif choice == 2:
+        ana.show_summary()
 
     elif choice >= 5:
         print("Exiting...")

@@ -19,3 +19,33 @@ def load_data() :
         return df
     except:
         return pd.DataFrame([])
+
+def show_summary() :
+    data = load_data()
+    average = 0
+    most_expensive = cheapest = None
+
+    for row in data.iterrows() :
+        row_l = list(row)[1]
+
+        book_price = float(row_l["Price"][2:])
+        average += book_price
+        if (most_expensive is None or float(most_expensive["Price"][2:]) < book_price):
+            most_expensive = {
+                "Title" : row_l["Title"],
+                "Price": row_l["Price"],
+                "Rating" : row_l["Rating"]
+            }
+        
+        if (cheapest is None or float(cheapest["Price"][2:]) > book_price):
+            cheapest = {
+                "Title" : row_l["Title"],
+                "Price": row_l["Price"],
+                "Rating" : row_l["Rating"]
+            }
+
+    print(f"Most Expensive Book : \n\t{most_expensive}")
+    print(f"The Cheapest Book : \n\t{cheapest}")
+    print(f"Average Price : {average/(data.size / len(data.columns))}")
+    print(f"Total Price : {average}")
+    print(f"Size : {data.size / len(data.columns)}")

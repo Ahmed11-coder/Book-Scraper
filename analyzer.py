@@ -63,3 +63,15 @@ def show_chart() :
     plt.pie(values, labels=rates, autopct="%1.1f%%", explode=(0.1, 0, 0, 0, 0), shadow=True)
     plt.title("Books Rates")
     plt.show()
+
+def filter_books(max_price = None, min_rating = None) :
+    data = load_data()
+    result = pd.DataFrame([])
+    if (max_price) :
+        result = pd.concat([result, data[data["Price"] <= max_price]], ignore_index=True)
+    
+    if (min_rating) :
+
+        result = pd.concat([result, data[data["Rating"] >= min_rating]], ignore_index=True)
+
+    print(result + '\n')

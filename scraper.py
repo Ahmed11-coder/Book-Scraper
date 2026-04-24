@@ -7,6 +7,7 @@ url = "https://books.toscrape.com/"
 def scrape_books(page = 1):
     url = f"https://books.toscrape.com/catalogue/page-{page}.html"
     response = requests.get(url)
+    if (response.status_code == 404) : raise ValueError(f"404 Page {page} Not Found")
     books = []
 
     soup = BeautifulSoup(response.text, "html.parser")
@@ -26,6 +27,7 @@ def scrape_books(page = 1):
 
 def scrape_in_range(start_page, end_page):
     all_books = []
-    for page in range(start_page, end_page + 1):
-        all_books.extend(scrape_books(page))
+    for page in range(start_page, end_page+1):
+        books = scrape_books(page)
+        all_books.extend(books)
     return all_books

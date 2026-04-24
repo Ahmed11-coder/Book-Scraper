@@ -1,15 +1,24 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-def save_data(data, loaded_data) :
+def save_data(data, loaded_data: pd.DataFrame) :
+    books_titles = []
+    books_prices = []
+    books_ratings = []
 
-    books_titles = [book["title"] for book in data]
-    books_prices = [book["price"] for book in data]
-    books_ratings = [book["rating"] for book in data]
+    # Avoid Data Which Allready Saved & Maintain Which Is New
+    for book in data :
+        res = book["title"] in loaded_data["Title"].values
+        if (not res) :
+            books_titles.append((book["title"]))
+            books_prices.append((book["price"]))
+            books_ratings.append(int(book["rating"]))
 
     books_info = pd.DataFrame({"Title": books_titles, "Price" : books_prices, "Rating": books_ratings})
+    
+    # Marge Two DataFrame
     if (not loaded_data.empty) :
-        books_info = pd.concat([books_info, loaded_data], ignore_index=True)
+        books_info = pd.concat([books_info, loaded_data], ignore_index=True) 
     
     print(books_info)
     books_info.to_csv("data/books.csv", sep ='\t', index=False)
@@ -22,9 +31,13 @@ def load_data() :
         return pd.DataFrame([])
 
 def show_summary() :
-    data = load_data()
+    data:pd.DataFrame = load_data()
     average = 0
     most_expensive = cheapest = None
+
+    if (data.empty) :
+        print("Not Found Data To Summarization It")
+        return
 
     for row in data.iterrows() :
         row_l = list(row)[1]
@@ -47,12 +60,18 @@ def show_summary() :
 
     print(f"Most Expensive Book : \n\t{most_expensive}")
     print(f"The Cheapest Book : \n\t{cheapest}")
-    print(f"Average Price : {average/(data.size / len(data.columns))}")
+    print(f"Average Price : {data["Price"].mean():.2f}")
     print(f"Total Price : {average}")
     print(f"Size : {data.size / len(data.columns)}")
 
+
 def show_chart() :
-    data = load_data()
+    data:pd.DataFrame = load_data()
+
+    if (data.empty) :
+        print("Not Found Data To Draw It")
+        return
+
     rates = ["One", "Two", "Three", "Four", "Five"]
     values = [0] * 5
 
@@ -64,22 +83,24 @@ def show_chart() :
     plt.title("Books Rates")
     plt.show()
 
-def filter_books(max_price = None, min_rating = None) :
-    data = load_data()
-    result = pd.DataFrame([])
-    if (max_price) :
-        result = pd.concat([result, data[data["Price"] <= max_price]], ignore_index=True)
-    
-    if (min_rating) :
 
+def filter_books(max_price = None, min_rating = None) :
+    data:pd.DataFrame = load_data()
+
+    if (data.empty) :
+        print("Not Found Data To Filter")
+        return
+
+    result = pd.DataFrame([])
+    if (max_price and min_rating) :
+        result = data[(data["Price"] <= max_price) & (data["Rating"] >= min_rating)]
+    elif (max_price) :
+        result = pd.concat([result, data[data["Price"] <= max_price]], ignore_index=True)
+    elif (min_rating) :
         result = pd.concat([result, data[data["Rating"] >= min_rating]], ignore_index=True)
 
-<<<<<<< HEAD
-    print(result + '\n')
-=======
     if (result.empty) :
         print("No Books Found.")
     else : 
         print(result + '\n')
         print("==================")
->>>>>>> ca0ae2c (( Feat ) Add filter_books Function)

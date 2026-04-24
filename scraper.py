@@ -1,4 +1,5 @@
 import requests
+import re
 from bs4 import BeautifulSoup
 
 url = "https://books.toscrape.com/"
@@ -17,7 +18,7 @@ def scrape_books(page = 1):
         rating = box.find('p', class_="star-rating")["class"][1]
         books.append({
             "title": title,
-            "price": price,
+            "price": re.findall("\d+.?\d+", price)[0],
             "rating": rating == "One" and 1 or rating == "Two" and 2 or rating == "Three" and 3 or rating == "Four" and 4 or rating == "Five" and 5
         })
 

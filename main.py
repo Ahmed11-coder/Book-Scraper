@@ -23,6 +23,9 @@ while True:
         ana.save_data(scraped_books, loaded_data)
     elif choice == 2:
         ana.show_summary()
+    
+    elif choice == 3:
+        ana.show_chart()
 
     elif choice >= 5:
         print("Exiting...")

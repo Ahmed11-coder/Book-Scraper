@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 
 def save_data(data, loaded_data) :
 
@@ -49,3 +50,16 @@ def show_summary() :
     print(f"Average Price : {average/(data.size / len(data.columns))}")
     print(f"Total Price : {average}")
     print(f"Size : {data.size / len(data.columns)}")
+
+def show_chart() :
+    data = load_data()
+    rates = ["One", "Two", "Three", "Four", "Five"]
+    values = [0] * 5
+
+    for row in data.iterrows():
+        row_l = list(row)[1]
+        values[row_l["Rating"]-1] += 1
+
+    plt.pie(values, labels=rates, autopct="%1.1f%%", explode=(0.1, 0, 0, 0, 0), shadow=True)
+    plt.title("Books Rates")
+    plt.show()

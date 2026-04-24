@@ -27,6 +27,26 @@ while True:
     elif choice == 3:
         ana.show_chart()
 
+    elif choice == 4:
+        print("Filter Options:")
+        print("\t1. By Max Price")
+        print("\t2. By Min Rating")
+        print("\t3. Both")
+        filter_choice = int(input("Choose: "))
+
+        if (filter_choice == 1) :
+            max_price = float(input("Enter Max Price: "))
+            ana.filter_books(max_price)
+
+        elif (filter_choice == 2) :
+            min_rating = int(input("Enter Min Rate (1-5): "))
+            ana.filter_books(None, min_rating)
+
+        elif (filter_choice == 3):
+            max_price = float(input("Enter Max Price: "))
+            min_rating = int(input("Enter Min Rate (1-5): "))
+            ana.filter_books(max_price, min_rating)
+
     elif choice >= 5:
         print("Exiting...")
         break

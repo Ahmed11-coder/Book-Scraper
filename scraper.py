@@ -2,12 +2,15 @@ import requests
 import re
 from bs4 import BeautifulSoup
 
+# 🌐 Web Scraper for Books to Scrape website
+
 url = "https://books.toscrape.com/"
 
 def scrape_books(page = 1):
+    """📖 Scrape books from a specific page"""
     url = f"https://books.toscrape.com/catalogue/page-{page}.html"
     response = requests.get(url)
-    if (response.status_code == 404) : raise ValueError(f"404 Page {page} Not Found")
+    if (response.status_code == 404) : raise ValueError(f"❌ 404 Page {page} Not Found")
     books = []
 
     soup = BeautifulSoup(response.text, "html.parser")
@@ -26,6 +29,7 @@ def scrape_books(page = 1):
     return books
 
 def scrape_in_range(start_page, end_page):
+    """📚 Scrape books across a range of pages"""
     all_books = []
     for page in range(start_page, end_page+1):
         books = scrape_books(page)

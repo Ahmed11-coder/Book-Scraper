@@ -1,7 +1,10 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
+# 📊 Data Analyzer for Book Statistics and Visualizations
+
 def save_data(data, loaded_data: pd.DataFrame) :
+    """💾 Save scraped book data to CSV file"""
     books_titles = []
     books_prices = []
     books_ratings = []
@@ -24,6 +27,7 @@ def save_data(data, loaded_data: pd.DataFrame) :
     books_info.to_csv("data/books.csv", sep ='\t', index=False)
 
 def load_data() :
+    """📂 Load book data from CSV file"""
     try:
         df = pd.read_csv("data/books.csv", sep= '\t')
         return df
@@ -31,12 +35,13 @@ def load_data() :
         return pd.DataFrame([])
 
 def show_summary() :
+    """📋 Display summary statistics of book data"""
     data:pd.DataFrame = load_data()
     average = 0
     most_expensive = cheapest = None
 
     if (data.empty) :
-        print("Not Found Data To Summarization It")
+        print("⚠️ No data found to summarize")
         return
 
     for row in data.iterrows() :
@@ -58,18 +63,19 @@ def show_summary() :
                 "Rating" : row_l["Rating"]
             }
 
-    print(f"Most Expensive Book : \n\t{most_expensive}")
-    print(f"The Cheapest Book : \n\t{cheapest}")
-    print(f"Average Price : {data["Price"].mean():.2f}")
-    print(f"Total Price : {average}")
-    print(f"Size : {data.size / len(data.columns)}")
+    print(f"💰 Most Expensive Book : \n\t{most_expensive}")
+    print(f"💵 The Cheapest Book : \n\t{cheapest}")
+    print(f"📊 Average Price : {data["Price"].mean():.2f}")
+    print(f"💵 Total Price : {average}")
+    print(f"📚 Total Books : {data.size / len(data.columns)}")
 
 
 def show_chart() :
+    """📈 Display pie chart of book rating distribution"""
     data:pd.DataFrame = load_data()
 
     if (data.empty) :
-        print("Not Found Data To Draw It")
+        print("⚠️ No data found to draw chart")
         return
 
     rates = ["One", "Two", "Three", "Four", "Five"]
@@ -80,15 +86,16 @@ def show_chart() :
         values[row_l["Rating"]-1] += 1
 
     plt.pie(values, labels=rates, autopct="%1.1f%%", explode=(0.1, 0, 0, 0, 0), shadow=True)
-    plt.title("Books Rates")
+    plt.title("📊 Book Rating Distribution")
     plt.show()
 
 
 def filter_books(max_price = None, min_rating = None) :
+    """🔍 Filter books by price and/or rating"""
     data:pd.DataFrame = load_data()
 
     if (data.empty) :
-        print("Not Found Data To Filter")
+        print("⚠️ No data found to filter")
         return
 
     result = pd.DataFrame([])
@@ -100,7 +107,8 @@ def filter_books(max_price = None, min_rating = None) :
         result = pd.concat([result, data[data["Rating"] >= min_rating]], ignore_index=True)
 
     if (result.empty) :
-        print("No Books Found.")
+        print("❌ No books found matching your criteria.")
     else : 
+        print("✅ Filter Results:")
         print(result + '\n')
         print("==================")
